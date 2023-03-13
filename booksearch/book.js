@@ -24,13 +24,13 @@ searchBox.addEventListener("submit", e => {
   e.preventDefault();
   if(query!=="") {
 
-    searchRequest(query.value);
+    searchRequest(query.value, page);
   }
 });
 
 function searchRequest(query)  {
   $.ajax({
-    "url": `https://dapi.kakao.com/v3/search/book?query=${query}&page=1&size=10&target=title`,
+    "url": `https://dapi.kakao.com/v3/search/book?query=${query}&page=${page}&size=10&target=title`,
     "method": "GET",
     "timeout": 0,
     "headers": {
@@ -94,11 +94,15 @@ function searchRequest(query)  {
     
     for(let i=0; i<paseSize; i++) {
       const pageNum = document.createElement("a");
-      const url = `https://dapi.kakao.com/v3/search/book?query=${query}&page=${i+1}&size=10&target=title`;
-
-      pageNum.setAttribute("href", url);
       pageNum.innerText = i + 1;
       pageList.append(pageNum);
     }
   });
 }
+
+pageList.addEventListener("click", e => {
+  const pageNum = e.target.innerText;
+  page = pageNum;
+  
+  searchRequest(query.value);
+});
