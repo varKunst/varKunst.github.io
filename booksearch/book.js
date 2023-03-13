@@ -16,6 +16,8 @@
 let page = 1;
 
 const container = document.querySelector(".container");
+const pageList = document.querySelector(".page-list");
+
 const query = document.querySelector(".query");
 const searchBox = document.querySelector(".search-box");
 searchBox.addEventListener("submit", e => {
@@ -23,7 +25,6 @@ searchBox.addEventListener("submit", e => {
   if(query!=="") {
 
     searchRequest(query.value);
-    page = 1;
   }
 });
 
@@ -40,6 +41,7 @@ function searchRequest(query)  {
     let isEnd = response.meta.is_end;
 
     container.innerHTML = "";
+    pageList.innerHTML = "";
 
     const size = response.documents.length;
     let paseSize = response.meta.total_count / size;
@@ -90,7 +92,6 @@ function searchRequest(query)  {
       container.append(resultCard);
     }
     
-    let pageList = document.querySelector(".page-list");
     for(let i=0; i<paseSize; i++) {
       const pageNum = document.createElement("a");
       const url = `https://dapi.kakao.com/v3/search/book?query=${query}&page=${i+1}&size=10&target=title`;
