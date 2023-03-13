@@ -14,6 +14,7 @@
 // -> jQuery.ajax() 메소드를 활용
 
 let page = 1;
+let pageSize = 0;
 
 const container = document.querySelector(".container");
 const pageList = document.querySelector(".page-list");
@@ -23,10 +24,12 @@ const searchBox = document.querySelector(".search-box");
 searchBox.addEventListener("submit", e => {
   e.preventDefault();
   if(query!=="") {
-
-    searchRequest(query.value, page);
+    page = 1;
+    searchRequest(query.value);
   }
 });
+
+const nextBtn = document.getElementById("nextPage");
 
 function searchRequest(query)  {
   $.ajax({
@@ -44,10 +47,11 @@ function searchRequest(query)  {
     pageList.innerHTML = "";
 
     const size = response.documents.length;
-    let paseSize = response.meta.total_count / size;
+    pageSize = response.meta.total_count / size;
 
     if((response.meta.total_count % size)!=0) {
-      paseSize += 1;
+      pageSize += 1;
+      pageSize = Math.floor(pageSize);
     }
 
     for(let i=0; i<size; i++) {
@@ -92,17 +96,46 @@ function searchRequest(query)  {
       container.append(resultCard);
     }
     
-    for(let i=0; i<paseSize; i++) {
-      const pageNum = document.createElement("a");
-      pageNum.innerText = i + 1;
-      pageList.append(pageNum);
+    const recentPage = document.createElement("input");
+    recentPage.setAttribute("type", "text");
+    recentPage.setAttribute("class", "recent-page");
+    recentPage.setAttribute("value", page);
+
+    const totalPage = document.createElement("span");
+    totalPage.setAttribute("class", "total-page");
+    totalPage.setAttribute("value", "total-page");
+    totalPage.innerText = " / " + pageSize;
+    
+    const prevPage = document.createElement("img");
+    prevPage.setAttribute("id", "prevPage");
+    prevPage.setAttribute("class", "moveBtn");
+    prevPage.setAttribute("src", "https://em-content.zobj.net/thumbs/240/apple/325/left-arrow_2b05-fe0f.png");
+
+    const nextPage = document.createElement("img");
+    nextPage.setAttribute("id", "nextPage");
+    nextPage.setAttribute("class", "moveBtn");
+    nextPage.setAttribute("src", "https://em-content.zobj.net/thumbs/240/apple/325/right-arrow_27a1-fe0f.png");
+
+    if(page>1) {
+      pageList.append(prevPage);
+    }
+    pageList.append(recentPage, totalPage);
+    
+    if(page<pageSize) {
+      pageList.append(nextPage);
     }
   });
 }
 
 pageList.addEventListener("click", e => {
-  const pageNum = e.target.innerText;
-  page = pageNum;
-  
-  searchRequest(query.value);
+  let id = e.target.getAttribute("id");
+
+  if(id=="nextPage") {
+    page++;
+    searchRequest(query.value);
+  } else if(id=="prevPage") {
+    page--;
+    searchRequest(query.value);
+  } 
 });
+

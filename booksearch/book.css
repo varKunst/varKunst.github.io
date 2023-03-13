@@ -26,7 +26,7 @@ h1 {
   height: 300px;
   font-size: 11px;
   background-image: "resources/cardBG.png";
-  border: 1px solid green;
+  border: 1px solid rgb(253, 249, 23);
   padding: 5px;
 }
 
@@ -37,4 +37,17 @@ h1 {
 .page-list > a {
   margin: 5px;
   cursor: pointer;
+}
+
+.moveBtn {
+  width: 15px;
+  height: 15px;
+  margin: 0 5px 0 5px;
+  cursor: pointer;
+}
+
+.recent-page {
+  width: 15px;
+  height: 15px;
+  text-align: center;
 }
