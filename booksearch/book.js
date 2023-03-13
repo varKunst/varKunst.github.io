@@ -15,13 +15,15 @@
 
 let page = 1;
 
+const container = document.querySelector(".container");
 const query = document.querySelector(".query");
 const searchBox = document.querySelector(".search-box");
 searchBox.addEventListener("submit", e => {
   e.preventDefault();
   if(query!=="") {
-    page = 1;
+
     searchRequest(query.value);
+    page = 1;
   }
 });
 
@@ -35,20 +37,67 @@ function searchRequest(query)  {
     },
   }).done((response) => {
     console.log(response);
-    // container 안에
+    let isEnd = response.meta.is_end;
+
+    container.innerHTML = "";
+
+    const size = response.documents.length;
+    let paseSize = response.meta.total_count / size;
+
+    if((response.meta.total_count % size)!=0) {
+      paseSize += 1;
+    }
+
+    for(let i=0; i<size; i++) {
+      const url = document.createElement("a");
+      url.setAttribute("href", response.documents[i].url);
+
+      const img = document.createElement("img");
+      img.setAttribute("class", "book-img");
+      img.setAttribute("src", response.documents[i].thumbnail);
+
+      url.append(img);
+
+      const title = document.createElement("h4");
+      title.setAttribute("class", "book-title");
+      title.innerText = response.documents[i].title;
+
+      const description = document.createElement("p");
+      description.setAttribute("class", "book-description");
+      description.innerText = response.documents[i].contents.substring(0,50) + "...";
+
+      const price = document.createElement("span");
+      price.setAttribute("class", "price");
+      price.innerText = response.documents[i].price;
+
+      const info = document.createElement("p");
+      info.setAttribute("class", "book-info");
+
+      const author = document.createElement("span");
+      author.setAttribute("class", "author");
+      author.innerText = response.documents[i].authors;
+
+      const publisher = document.createElement("span");
+      publisher.setAttribute("class", "publisher");
+      publisher.innerText = response.documents[i].publisher;
+
+      info.append(author, " | " ,publisher);
+
+      const resultCard = document.createElement("div");
+      resultCard.setAttribute("class", "result-card");
+      resultCard.append(url, title, description, price, info);
+
+      container.append(resultCard);
+    }
     
-    // <div class="result-card">
-    //   <img class="book-img" src="/book.png">
-    //   <h4 class="book-title">도서제목</h4>
-    //   <p class="book-description">도서상세정보</p>
-    //   <span class="price">10000원</span>
-    //   <p class="book-info">
-    //     <span class="author">저자</span>|<span class="publisher">출판사</span>
-    //   </p>
-    // </div>
+    let pageList = document.querySelector(".page-list");
+    for(let i=0; i<paseSize; i++) {
+      const pageNum = document.createElement("a");
+      const url = `https://dapi.kakao.com/v3/search/book?query=${query}&page=${i+1}&size=10&target=title`;
 
-    // 새로 생성 및 구성 완료한 result-card 요소를 추가
-
+      pageNum.setAttribute("href", url);
+      pageNum.innerText = i + 1;
+      pageList.append(pageNum);
+    }
   });
 }
-
