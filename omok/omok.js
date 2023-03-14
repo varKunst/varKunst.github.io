@@ -14,6 +14,15 @@ for(let i=0; i<size; i++) {
   check.push(temp);
 }
 
+const background = document.querySelector(".background");
+for(let i=0; i<size+1; i++) {
+  for(let j=0; j<size+1; j++) {
+    const newBlock = document.createElement("div");
+    newBlock.setAttribute("class", "backBlock");
+    background.append(newBlock);
+  }
+}
+
 const board = document.querySelector(".board");
 const block = [];
 for(let i=0; i<size; i++) {
