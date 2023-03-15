@@ -1,0 +1,42 @@
+* {
+  font-size: 11px;
+}
+
+.chat-content {
+  width: 350px;
+  height: 500px;
+}
+
+.line {
+  width: 350px;
+  margin-bottom: 10px;
+}
+
+.chat-box {
+  width: 200px;
+  height: auto;
+}
+
+.bot > .chat-box {
+  background-color: lightslategray;
+  margin-right: 100px;
+}
+
+.mine {
+  text-align: right;
+}
+
+.mine > .chat-box{
+  background-color: rgb(29, 29, 255);
+  margin-left: 100px;
+}
+
+.sendArea {
+  width: 400px;
+  display: flex;
+  justify-content: center;
+}
+
+#input {
+  width: 180px;
+}
