@@ -15,7 +15,7 @@ document.querySelector("#send").addEventListener("click", function() {
     model: "text-davinci-003",
     prompt: `${document.querySelector("#input").value}`,
     temperature: 0.9,
-    max_tokens: 240,
+    max_tokens: 2000,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0.6,
