@@ -1,18 +1,3 @@
-// document.querySelector("#send").addEventListener("click", function() {
-//   const input = document.querySelector("#input").value;
-  
-//   const content = document.querySelector(".chat-content");
-
-//   const line = document.createElement("div");
-//   line.setAttribute("class", "line mine");
-
-//   const myMessage = document.createElement("span");
-//   myMessage.setAttribute("class", "chat-box");
-//   myMessage.innerText = `${input}`;
-
-//   line.append(myMessage);
-//   content.append(line);
-// });
 import { Configuration, OpenAIApi } from "https://cdn.skypack.dev/openai";
 document.querySelector("#send").addEventListener("click", function() {
   let template = `
@@ -21,9 +6,8 @@ document.querySelector("#send").addEventListener("click", function() {
   </div>`;
   document.querySelector(".chat-content").insertAdjacentHTML("beforeend", template);
 
-
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "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",
   });
   const openai = new OpenAIApi(configuration);
 
